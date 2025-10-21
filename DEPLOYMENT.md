@@ -51,8 +51,11 @@ vercel --prod
 
 ```
 flint/
+├── api/             # Vercel Serverless Functions
+│   ├── chat.js      # Chat API endpoint
+│   └── package.json # API dependencies
 ├── client/          # React 前端 (Vite)
-├── server/          # Express 后端 (Serverless)
+├── server/          # Express 后端 (本地开发)
 ├── vercel.json      # Vercel 配置
 └── package.json     # 根配置
 ```
@@ -60,11 +63,10 @@ flint/
 ## Vercel 配置说明
 
 `vercel.json` 配置了：
-- **前端构建**: 使用 `@vercel/static-build` 构建 React 应用
-- **后端 API**: 使用 `@vercel/node` 将 Express 转换为 Serverless 函数
-- **路由规则**: 
-  - `/api/*` → 后端 API
-  - 其他路径 → 前端静态文件
+- **构建命令**: 自动安装依赖并构建前端
+- **输出目录**: `client/dist` 作为静态文件根目录
+- **API 路由**: `/api/*` 自动映射到 `api/` 目录下的 Serverless 函数
+- **重写规则**: 确保 API 请求正确路由
 
 ## 本地开发
 
@@ -104,14 +106,29 @@ npm run dev
 ### 部署失败
 - 检查 Vercel 构建日志
 - 确认所有依赖都在 `package.json` 中
+- 确保 `api/package.json` 包含 `axios` 依赖
 
-### API 调用失败
-- 确认环境变量已正确设置
-- 检查 Vercel Functions 日志
+### API 调用失败（500 错误）
+**最常见原因：环境变量未设置**
+1. 进入 Vercel Dashboard → 你的项目 → Settings → Environment Variables
+2. 添加 `OPENAI_API_KEY`（必需）
+3. 添加 `OPENAI_MODEL`（可选，默认 `gpt-4o-mini`）
+4. **重要**: 添加环境变量后必须重新部署！
+
+**检查步骤：**
+- 在 Vercel Dashboard → Deployments → 最新部署 → Functions
+- 点击 `/api/chat` 查看函数日志
+- 查看是否有 API key 相关错误
+
+### API 调用失败（404 错误）
+- 确认 `api/chat.js` 文件存在
+- 检查 `vercel.json` 配置正确
+- 确认前端请求路径为 `/api/chat`
 
 ### 前端无法访问 API
-- 确认 `vercel.json` 路由配置正确
 - 检查浏览器控制台网络请求
+- 确认请求 URL 为 `/api/chat`（不是 `http://localhost:3001/api/chat`）
+- 查看 Network 标签中的响应状态码和错误信息
 
 ## 更多资源
 
