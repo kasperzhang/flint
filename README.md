@@ -37,7 +37,7 @@ Flint shifts the interaction model from passive reception to active co-thinking:
 ### Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/flint.git
+git clone https://github.com/kasperzhang/flint.git
 cd flint
 npm install
 ```
