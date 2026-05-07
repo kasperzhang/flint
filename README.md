@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flint — Standing in the Loop of Thought
+
+> *A flint does nothing on its own. A spark only appears when a human hand strikes it against steel.*
+
+Flint is an AI thinking mentor that preserves human cognitive agency. Instead of answering questions directly, Flint guides users through their own reasoning by generating customized cognitive scaffolds — decision matrices, mind maps, 5 Whys frameworks — as interactive structures the user must fill in themselves.
+
+This project is the software prototype developed for Kasper Zhang's MDes thesis at OCAD University (2026): *"Flint: Standing in the Loop of Thought — Exploring Human Agency in the Age of AI."*
+
+## The Problem
+
+Linear chat interfaces promote **automation bias**: users delegate reasoning to AI and become passive supervisors rather than active thinkers. When AI structures your thoughts for you, the productive struggle required for deep understanding disappears.
+
+## The Approach
+
+Flint shifts the interaction model from passive reception to active co-thinking:
+
+- **AI as mentor, not author** — Flint asks Socratic questions and proposes scaffolds, but cannot write on the canvas
+- **Generative UI** — the interface restructures itself dynamically based on the user's reasoning needs
+- **Productive struggle** — blank frameworks prompt genuine cognitive effort; the user remains the architect of their own thought process
+
+## Tech Stack
+
+- **Framework:** Next.js 15 + React 19 (App Router)
+- **Styling:** Tailwind CSS v4
+- **State:** Zustand v5 (phase, scaffold proposals, suggestions)
+- **AI:** Vercel AI SDK v4 + Anthropic Claude (`claude-sonnet-4-6`) — streaming chat + structured scaffold generation
+- **Database:** Drizzle ORM + PostgreSQL
+- **Validation:** Zod
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL
+
+### Installation
+
+```bash
+git clone https://github.com/YOUR_USERNAME/flint.git
+cd flint
+npm install
+```
+
+### Environment Setup
+
+Copy the example env file and fill in your credentials:
+
+```bash
+cp .env.example .env
+```
+
+```env
+DATABASE_URL=postgresql://localhost:5432/flint
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+### Database Setup
+
+```bash
+createdb flint
+npm run db:push
+```
+
+### Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Flint runs a four-phase conversation loop:
 
-## Learn More
+1. **Problem** — user describes what they're working through
+2. **Clarify** — Flint asks Socratic questions to understand the reasoning context
+3. **Propose** — Flint proposes a scaffold type suited to the problem (user must click "Generate")
+4. **Discussion** — user fills in the scaffold; Flint continues as a thinking partner
 
-To learn more about Next.js, take a look at the following resources:
+The AI configures the environment but cannot populate it. Thinking remains the user's responsibility.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── mentor/      # Streaming mentor chat with phase/scaffold tools
+│   │   └── scaffold/    # Structured scaffold generation
+│   ├── session/         # Session-based chat UI
+│   └── playground/      # Scaffold testing playground
+├── components/
+│   └── chat/            # ChatContainer and UI components
+├── lib/
+│   ├── ai/prompts.ts    # Mentor + scaffold system prompts
+│   ├── db/schema.ts     # Sessions + messages schema
+│   └── phase-machine.ts # Phase transition state machine
+└── stores/
+    └── session-store.ts # Zustand store: phase, proposals, scaffolds
+```
 
-## Deploy on Vercel
+## Research Context
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This prototype is the third of three design iterations explored in the thesis:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Version | Name | Approach | Limitation |
+|---|---|---|---|
+| V1 | The Conversationalist | System-prompted chat | Double bind of control |
+| V2 | The Transparent Box | Visualized chain of thought | Burden of structure |
+| V3 | The Co-Thinking Canvas | Generative spatial scaffolds | Current version |
+
+The thesis argues that transitioning from linear to spatial interfaces can restore human agency, positioning AI as a co-thinker rather than a replacement for human creativity.
+
+---
+
+*MDes Thesis — OCAD University, Digital Futures, Toronto 2026*  
+*Kasper Zhang*
