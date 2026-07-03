@@ -6,6 +6,9 @@ Flint is an AI thinking mentor that preserves human cognitive agency. Instead of
 
 This project is the software prototype developed for Kasper Zhang's MDes thesis at OCAD University (2026): *"Flint: Standing in the Loop of Thought — Exploring Human Agency in the Age of AI."*
 
+<img width="1920" height="1440" alt="Shots Mockups" src="https://github.com/user-attachments/assets/9207c249-9350-4bf2-ad4f-92543e67316f" />
+
+
 ## The Problem
 
 Linear chat interfaces promote **automation bias**: users delegate reasoning to AI and become passive supervisors rather than active thinkers. When AI structures your thoughts for you, the productive struggle required for deep understanding disappears.
