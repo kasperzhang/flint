@@ -30,7 +30,7 @@ Why this scaffold: ${proposal.description}
 Here's what the user discussed with Flint:
 ${conversationContext}
 
-Remember: make all labels, headers, and placeholders specific to THEIR problem. Leave all input fields empty for the user to fill in. Output ONLY the raw HTML.`;
+Remember: follow the Flint Design System exactly (warm canvas, white cards, the single orange spark, mono labels, dashed frames for empty fields). Make all labels, headers, and placeholders specific to THEIR problem. Leave all input fields empty for the user to fill in. Output ONLY the raw HTML.`;
 
   return { system, user };
 }

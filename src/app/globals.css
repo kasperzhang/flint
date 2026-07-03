@@ -1,27 +1,133 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* ============================================================
+   FLINT — Design Tokens
+   "Warm minimalism, one confident spark."
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ---- Surfaces (warm off-white → white) ---- */
+  --canvas:         #f4f2ee;  /* app background */
+  --surface:        #ffffff;  /* cards, panels, the working plane */
+  --surface-raised: #faf9f6;  /* window chrome / subtle raised bars */
+  --surface-sunken: #f3f1ec;  /* header cells, inset chips */
+  --chat-tint:      #fcfbf9;  /* the conversation panel */
+
+  /* ---- Ink (warm near-black → muted) ---- */
+  --ink:   #171717;  /* primary text, strong titles */
+  --ink-2: #52504a;  /* body copy, secondary */
+  --ink-3: #8c897f;  /* muted labels, captions, placeholders */
+
+  /* ---- Borders (low-contrast, never harsh) ---- */
+  --border:        #e6e3db;  /* default hairline */
+  --border-strong: #d9d5cb;  /* emphasis / hover */
+
+  /* ---- The spark (single warm accent) ---- */
+  --accent:      #f46e1f;  /* primary — active states, identity, "you fill this" */
+  --accent-ink:  #b4520f;  /* accent text on a light tint */
+  --accent-tint: #fff6ee;  /* accent surface / filled data cells */
+  --accent-line: #f4c6a0;  /* accent border */
+
+  /* ---- Radius ---- */
+  --r-xs:   8px;
+  --r-sm:   12px;
+  --r-md:   16px;
+  --r-lg:   20px;
+  --r-pill: 999px;
+
+  /* ---- Shadows (soft, large, low-opacity, warm) ---- */
+  --shadow-sm:     0 8px 24px -16px rgba(24, 18, 10, .25);
+  --shadow-card:   0 30px 56px -32px rgba(24, 18, 10, .28);
+  --shadow-window: 0 40px 90px -50px rgba(24, 18, 10, .45);
+
+  /* ---- Motion ---- */
+  --ease:     cubic-bezier(.16, 1, .3, 1);
+  --dur-fast: .2s;
+  --dur:      .35s;
+  --dur-slow: .7s;
+
+  /* ---- Focus ring ---- */
+  --focus: 0 0 0 3px rgba(244, 110, 31, .35);
+
+  /* ---- Legacy aliases (kept so existing bg-background / text-foreground work) ---- */
+  --background: var(--canvas);
+  --foreground: var(--ink);
 }
 
 @theme inline {
+  /* legacy */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* surfaces */
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-chat-tint: var(--chat-tint);
+
+  /* ink */
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+
+  /* borders */
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  /* the spark */
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-tint: var(--accent-tint);
+  --color-accent-line: var(--accent-line);
+
+  /* radius */
+  --radius-xs: var(--r-xs);
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+
+  /* type */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* motion */
+  --ease-flint: var(--ease);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible, on-brand focus for keyboard users — buttons & links only.
+   Text fields manage their own focus via their container border, so they
+   are intentionally excluded (no orange box around the input). */
+:where(a, button, [role="button"], summary, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
+/* Text fields never show the ring; the container handles focus affordance. */
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+[contenteditable]:focus,
+[contenteditable]:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
 }

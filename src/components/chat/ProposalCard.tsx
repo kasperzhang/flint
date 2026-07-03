@@ -18,31 +18,31 @@ export function ProposalCard({
   disableGenerate,
 }: ProposalCardProps) {
   return (
-    <div className="mx-4 mb-3 border border-foreground/10 rounded-xl p-4 space-y-3">
-      <div className="flex items-start justify-between gap-3">
-        <div className="space-y-1">
-          <p className="text-xs text-foreground/40 uppercase tracking-wide">
-            Suggested Scaffold
-          </p>
-          <p className="text-sm font-medium">{proposal.title}</p>
-          <p className="text-xs text-foreground/50">
-            {proposal.type}
-          </p>
-        </div>
+    <div className="mx-4 mb-3 space-y-3 rounded-[var(--r-md)] border border-border bg-surface p-4 shadow-[var(--shadow-sm)]">
+      <div className="space-y-1.5">
+        <p className="font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-accent">
+          Suggested Scaffold
+        </p>
+        <p className="text-[15px] font-bold tracking-[-0.02em] text-ink">
+          {proposal.title}
+        </p>
+        <p className="font-mono text-[11px] text-ink-3">{proposal.type}</p>
       </div>
-      <p className="text-sm text-foreground/60">{proposal.description}</p>
+      <p className="text-[13px] leading-relaxed text-ink-2">
+        {proposal.description}
+      </p>
       <div className="flex gap-2">
         <button
           onClick={onConfirm}
           disabled={isGenerating || disableGenerate}
-          className="flex-1 text-sm py-2 rounded-lg bg-foreground text-background hover:opacity-80 transition-opacity disabled:opacity-50"
+          className="flex-1 rounded-[var(--r-sm)] bg-accent py-2 text-[13px] font-semibold text-white transition-opacity duration-[var(--dur-fast)] hover:opacity-90 disabled:opacity-50"
         >
-          {isGenerating ? "Generating..." : disableGenerate ? "Generate Scaffold (use Final Prompt instead)" : "Generate Scaffold"}
+          {isGenerating ? "Generating…" : disableGenerate ? "Generate Scaffold (use Final Prompt instead)" : "Generate Scaffold"}
         </button>
         <button
           onClick={onReject}
           disabled={isGenerating}
-          className="text-sm px-4 py-2 rounded-lg border border-foreground/10 text-foreground/50 hover:text-foreground/70 hover:border-foreground/20 transition-colors disabled:opacity-50"
+          className="rounded-[var(--r-sm)] border border-border px-4 py-2 text-[13px] font-medium text-ink-2 transition-colors duration-[var(--dur-fast)] hover:border-border-strong hover:bg-surface-sunken disabled:opacity-50"
         >
           Not what I need
         </button>

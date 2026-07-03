@@ -1,43 +1,42 @@
 "use client";
 
-import { type Phase, PHASES, PHASE_LABELS } from "@/lib/phase-machine";
+import { type Phase, PHASES } from "@/lib/phase-machine";
 
 interface PhaseIndicatorProps {
   currentPhase: Phase;
 }
 
+// Short, single-word labels for the pill row (the guide's own naming).
+// Full labels live in PHASE_LABELS for use elsewhere.
+const PILL_LABELS: Record<Phase, string> = {
+  problem: "Problem",
+  clarify: "Clarify",
+  propose: "Propose",
+  discussion: "Discussion",
+};
+
 export function PhaseIndicator({ currentPhase }: PhaseIndicatorProps) {
   const currentIndex = PHASES.indexOf(currentPhase);
 
   return (
-    <div className="flex items-center gap-1 px-4 py-3">
+    <div className="flex items-center gap-1 px-1 py-2">
       {PHASES.map((phase, i) => {
         const isActive = i === currentIndex;
         const isCompleted = i < currentIndex;
 
         return (
-          <div key={phase} className="flex items-center gap-1 flex-1">
-            <div className="flex flex-col items-center flex-1">
-              <div
-                className={`h-1.5 w-full rounded-full transition-colors ${
-                  isActive
-                    ? "bg-foreground"
-                    : isCompleted
-                      ? "bg-foreground/40"
-                      : "bg-foreground/10"
-                }`}
-              />
-              <span
-                className={`text-[10px] mt-1 transition-colors ${
-                  isActive
-                    ? "text-foreground font-medium"
-                    : "text-foreground/40"
-                }`}
-              >
-                {PHASE_LABELS[phase]}
-              </span>
-            </div>
-          </div>
+          <span
+            key={phase}
+            className={`flex-1 whitespace-nowrap rounded-[var(--r-pill)] border px-2 py-[5px] text-center text-[11px] font-semibold transition-colors duration-[var(--dur-fast)] ${
+              isActive
+                ? "border-accent bg-accent text-white"
+                : isCompleted
+                  ? "border-border-strong bg-transparent text-ink-2"
+                  : "border-border bg-transparent text-ink-3"
+            }`}
+          >
+            {PILL_LABELS[phase]}
+          </span>
         );
       })}
     </div>

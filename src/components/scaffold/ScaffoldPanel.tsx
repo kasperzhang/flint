@@ -58,14 +58,16 @@ export function ScaffoldPanel() {
 
   if (isGenerating) {
     return (
-      <div className="flex-1 flex items-center justify-center text-foreground/40">
-        <div className="text-center space-y-3">
-          <div className="flex items-center justify-center gap-1">
-            <span className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce [animation-delay:0ms]" />
-            <span className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce [animation-delay:150ms]" />
-            <span className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce [animation-delay:300ms]" />
+      <div className="flex-1 flex items-center justify-center bg-surface">
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-1.5">
+            <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:0ms]" />
+            <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:150ms]" />
+            <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:300ms]" />
           </div>
-          <p className="text-sm">Generating scaffold...</p>
+          <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-ink-3">
+            Generating scaffold…
+          </p>
         </div>
       </div>
     );
@@ -73,14 +75,21 @@ export function ScaffoldPanel() {
 
   if (!srcDoc) {
     return (
-      <div className="flex-1 flex items-center justify-center text-foreground/30">
-        <div className="text-center space-y-2 max-w-md">
-          <div className="text-4xl mb-4">&#9671;</div>
-          <p className="text-lg font-medium text-foreground/50">Scaffold Area</p>
-          <p className="text-sm">
-            As you discuss your thinking with Flint, a thinking scaffold will be
-            proposed and generated here — any thinking structure that fits your problem.
-          </p>
+      <div className="flex-1 flex items-center justify-center bg-surface p-8">
+        <div className="max-w-md w-full text-center">
+          <div className="rounded-[var(--r-lg)] border border-dashed border-border-strong bg-surface-raised px-8 py-12 space-y-3">
+            <p className="text-[20px] font-bold tracking-[-0.02em] text-ink">
+              The working plane
+            </p>
+            <p className="text-[14px] leading-relaxed text-ink-2">
+              As you think out loud with Flint, a scaffold — any structure that
+              fits your problem — is proposed and generated here for you to fill in.
+            </p>
+          </div>
+          <div className="mt-5 flex items-center justify-center gap-2 text-[12.5px] text-ink-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+            Flint can read this, but it can never write here.
+          </div>
         </div>
       </div>
     );

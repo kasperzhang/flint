@@ -42,22 +42,22 @@ export function ChatInput({
   };
 
   return (
-    <form onSubmit={onSubmit} className="px-4 pb-4">
-      <div className="flex items-end gap-2 border border-foreground/10 rounded-xl px-4 py-3 focus-within:border-foreground/20 transition-colors">
+    <form onSubmit={onSubmit} className="px-4 pb-4 pt-1">
+      <div className="flex items-end gap-2 rounded-[var(--r-sm)] border border-border bg-surface px-3.5 py-2.5 transition-colors duration-[var(--dur-fast)] focus-within:border-border-strong">
         <textarea
           ref={textareaRef}
           value={input}
           onChange={onInputChange}
           onKeyDown={handleKeyDown}
-          placeholder="Describe what you're thinking about..."
+          placeholder="Type your thinking…"
           disabled={isLoading}
           rows={1}
-          className="flex-1 bg-transparent resize-none outline-none text-sm leading-snug min-h-[32px] py-[7px] placeholder:text-foreground/30 disabled:opacity-50"
+          className="flex-1 bg-transparent resize-none outline-none font-mono text-[13px] leading-snug min-h-[28px] py-[6px] text-ink placeholder:text-ink-3 disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={!input.trim() || isLoading}
-          className="shrink-0 w-8 h-8 rounded-lg bg-foreground text-background flex items-center justify-center disabled:opacity-30 transition-opacity hover:opacity-80"
+          className="shrink-0 w-7 h-7 rounded-[var(--r-xs)] bg-ink text-white flex items-center justify-center disabled:opacity-30 transition-opacity duration-[var(--dur-fast)] hover:opacity-85"
         >
           <svg
             width="16"

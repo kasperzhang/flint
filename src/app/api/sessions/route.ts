@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
-import { db, sessions } from "@/lib/db";
-import { desc } from "drizzle-orm";
+import { db, sessions, messages } from "@/lib/db";
+import { and, asc, desc, eq } from "drizzle-orm";
+
+/** Collapse whitespace and trim a message down to a one-liner for cards. */
+function toDescription(raw: string): string {
+  const clean = raw.replace(/\s+/g, " ").trim();
+  if (clean.length <= 160) return clean;
+  return clean.slice(0, 157).trimEnd() + "…";
+}
 
 export async function POST(req: Request) {
   if (!db) {
@@ -42,7 +49,31 @@ export async function GET() {
       .from(sessions)
       .orderBy(desc(sessions.updatedAt));
 
-    return NextResponse.json(allSessions);
+    // Attach a one-line description from each session's first user message.
+    const withDescriptions = await Promise.all(
+      allSessions.map(async (session) => {
+        const [firstUserMessage] = await db!
+          .select({ content: messages.content })
+          .from(messages)
+          .where(
+            and(
+              eq(messages.sessionId, session.id),
+              eq(messages.role, "user")
+            )
+          )
+          .orderBy(asc(messages.createdAt))
+          .limit(1);
+
+        return {
+          ...session,
+          description: firstUserMessage
+            ? toDescription(firstUserMessage.content)
+            : null,
+        };
+      })
+    );
+
+    return NextResponse.json(withDescriptions);
   } catch (e) {
     console.error("Failed to list sessions:", e);
     return NextResponse.json([]);

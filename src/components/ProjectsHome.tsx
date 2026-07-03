@@ -3,12 +3,14 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { FlintLogo } from "./FlintLogo";
 
 interface Session {
   id: string;
   title: string;
   phase: string;
   starred: boolean;
+  description: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -20,11 +22,13 @@ const PHASE_LABELS: Record<string, string> = {
   discussion: "Discussion",
 };
 
+// One spark: the accent marks the active thinking phase (discussion);
+// earlier phases stay monochrome so orange keeps its meaning.
 const PHASE_DOT_COLOR: Record<string, string> = {
-  problem: "bg-amber-400",
-  clarify: "bg-sky-400",
-  propose: "bg-violet-400",
-  discussion: "bg-emerald-400",
+  problem: "bg-ink-3/50",
+  clarify: "bg-ink-3/70",
+  propose: "bg-ink-3",
+  discussion: "bg-accent",
 };
 
 function relativeTime(dateStr: string): string {
@@ -143,18 +147,12 @@ export function ProjectsHome() {
       {/* Header */}
       <header>
         <div className="max-w-[1120px] mx-auto px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 2L3 11l7 11 4-7-2-5 6-4L8 2z" fill="currentColor" className="text-foreground" />
-              <path d="M12 15l4-7-6 2 2 5z" fill="currentColor" className="text-foreground" opacity="0.45" />
-            </svg>
-            <span className="text-[17px] font-semibold tracking-tight">Flint</span>
-          </div>
+          <FlintLogo size={22} />
           <div className="flex items-center gap-2">
             <PlaygroundMenu />
             <button
               onClick={handleNewProject}
-              className="flex items-center gap-1.5 h-9 px-4 text-[13px] font-medium rounded-lg bg-foreground text-background hover:opacity-85 transition-opacity"
+              className="flex items-center gap-1.5 h-9 px-4 text-[13px] font-semibold rounded-[var(--r-sm)] bg-ink text-white hover:opacity-85 transition-opacity"
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <path d="M12 5v14M5 12h14" />
@@ -169,7 +167,7 @@ export function ProjectsHome() {
       <main className="max-w-[1120px] mx-auto px-8 py-10">
         {loading ? (
           <div className="flex items-center justify-center py-32">
-            <div className="flex items-center gap-2 text-foreground/30 text-sm">
+            <div className="flex items-center gap-2 text-ink-3 text-sm">
               <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" className="opacity-20" />
                 <path d="M12 2a10 10 0 019.95 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -182,7 +180,7 @@ export function ProjectsHome() {
             {/* Starred projects */}
             {starredSessions.length > 0 && (
               <section className="mb-10">
-                <h2 className="text-lg font-medium tracking-tight mb-5">
+                <h2 className="text-[18px] font-bold tracking-[-0.02em] text-ink mb-5">
                   Starred projects
                 </h2>
                 <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -202,19 +200,19 @@ export function ProjectsHome() {
 
             {/* Recent projects */}
             <section>
-              <h2 className="text-lg font-medium tracking-tight mb-5">
+              <h2 className="text-[18px] font-bold tracking-[-0.02em] text-ink mb-5">
                 {sessions.length > 0 ? "Recent projects" : "Get started"}
               </h2>
               <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {/* Create new card */}
                 <button
                   onClick={handleNewProject}
-                  className="group flex flex-col items-center justify-center rounded-xl border border-dashed border-foreground/[0.12] hover:border-foreground/20 transition-all hover:shadow-md min-h-[120px] cursor-pointer"
+                  className="group flex flex-col items-center justify-center rounded-[var(--r-md)] border border-dashed border-border hover:border-border-strong transition-all duration-[var(--dur-fast)] min-h-[120px] cursor-pointer"
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-foreground/25 group-hover:text-foreground/40 transition-colors">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-ink-3 group-hover:text-ink-2 transition-colors">
                     <path d="M12 5v14M5 12h14" />
                   </svg>
-                  <span className="text-[13px] text-foreground/30 group-hover:text-foreground/50 mt-2 transition-colors">
+                  <span className="text-[13px] text-ink-3 group-hover:text-ink-2 mt-2 transition-colors">
                     New project
                   </span>
                 </button>
@@ -234,7 +232,7 @@ export function ProjectsHome() {
             </section>
 
             {sessions.length === 0 && (
-              <p className="text-center text-foreground/30 text-sm mt-16">
+              <p className="text-center text-ink-3 text-sm mt-16">
                 Start a new project to think through a problem with Socratic dialogue.
               </p>
             )}
@@ -298,8 +296,9 @@ function SessionCard({
   return (
     <div
       onClick={() => { if (!renaming) onOpen(); }}
-      className="group text-left relative flex flex-col justify-between rounded-xl border border-foreground/[0.08] hover:border-foreground/[0.12] transition-all hover:shadow-md min-h-[120px] cursor-pointer p-5"
+      className="group text-left relative flex flex-col justify-between rounded-[var(--r-md)] border border-border bg-surface hover:border-border-strong shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-card)] transition-all duration-[var(--dur)] min-h-[120px] cursor-pointer p-5"
     >
+      <div>
       {/* Top row: title + menu */}
       <div className="flex items-start gap-2">
         <div className="flex-1 min-w-0">
@@ -317,10 +316,10 @@ function SessionCard({
                 }
               }}
               onClick={(e) => e.stopPropagation()}
-              className="text-[15px] font-medium leading-snug bg-transparent border-b border-foreground/20 focus:border-foreground/50 outline-none py-0.5 w-full"
+              className="text-[15px] font-semibold text-ink leading-snug bg-transparent border-b border-border-strong focus:border-accent outline-none py-0.5 w-full"
             />
           ) : (
-            <h3 className="text-[15px] font-medium leading-snug line-clamp-2">
+            <h3 className="text-[15px] font-semibold tracking-[-0.01em] text-ink leading-snug line-clamp-2">
               {session.title}
             </h3>
           )}
@@ -333,23 +332,23 @@ function SessionCard({
               e.stopPropagation();
               setMenuOpen((o) => !o);
             }}
-            className="flex items-center justify-center w-7 h-7 rounded-full opacity-0 group-hover:opacity-100 hover:bg-foreground/[0.06] transition-all cursor-pointer"
+            className="flex items-center justify-center w-7 h-7 rounded-full opacity-0 group-hover:opacity-100 hover:bg-surface-sunken transition-all cursor-pointer"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="text-foreground/40">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="text-ink-3">
               <circle cx="12" cy="6" r="1.5" />
               <circle cx="12" cy="12" r="1.5" />
               <circle cx="12" cy="18" r="1.5" />
             </svg>
           </span>
           {menuOpen && (
-            <div className="absolute right-0 top-full mt-1 w-44 rounded-xl border border-foreground/10 bg-background shadow-lg py-1 z-50">
+            <div className="absolute right-0 top-full mt-1 w-44 rounded-[var(--r-md)] border border-border bg-surface shadow-[var(--shadow-card)] py-1 z-50">
               <span
                 onClick={(e) => {
                   e.stopPropagation();
                   setMenuOpen(false);
                   onToggleStar();
                 }}
-                className="block px-3.5 py-2 text-[13px] text-foreground/70 hover:bg-foreground/[0.04] transition-colors cursor-pointer"
+                className="block px-3.5 py-2 text-[13px] text-ink-2 hover:bg-surface-sunken transition-colors cursor-pointer"
               >
                 {session.starred ? "Unstar" : "Star"}
               </span>
@@ -360,7 +359,7 @@ function SessionCard({
                   setRenaming(true);
                   setRenameValue(session.title);
                 }}
-                className="block px-3.5 py-2 text-[13px] text-foreground/70 hover:bg-foreground/[0.04] transition-colors cursor-pointer"
+                className="block px-3.5 py-2 text-[13px] text-ink-2 hover:bg-surface-sunken transition-colors cursor-pointer"
               >
                 Rename
               </span>
@@ -370,7 +369,7 @@ function SessionCard({
                   setMenuOpen(false);
                   onDelete();
                 }}
-                className="block px-3.5 py-2 text-[13px] text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer"
+                className="block px-3.5 py-2 text-[13px] text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
               >
                 Delete
               </span>
@@ -379,18 +378,24 @@ function SessionCard({
         </div>
       </div>
 
+      {/* Description — the project's opening thought */}
+      <p className="mt-2 text-[13px] leading-relaxed text-ink-3 line-clamp-2">
+        {session.description || "No description yet"}
+      </p>
+      </div>
+
       {/* Bottom row: dot + phase + time + star */}
       <div className="flex items-center gap-2 mt-4">
         <span className={`w-1.5 h-1.5 rounded-full ${dotColor} shrink-0`} />
-        <span className="text-[12px] text-foreground/40">
+        <span className="text-[12px] text-ink-2">
           {PHASE_LABELS[session.phase] ?? session.phase}
         </span>
-        <span className="text-foreground/15">·</span>
-        <span className="text-[12px] text-foreground/30">
+        <span className="text-ink-3/40">·</span>
+        <span className="text-[12px] text-ink-3">
           {relativeTime(session.updatedAt)}
         </span>
         {session.starred && (
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-amber-400 ml-auto shrink-0">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-accent ml-auto shrink-0">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
         )}
@@ -419,7 +424,7 @@ function PlaygroundMenu() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1.5 h-9 px-3 text-[13px] text-foreground/50 hover:text-foreground rounded-lg hover:bg-foreground/[0.04] transition-colors"
+        className="flex items-center gap-1.5 h-9 px-3 text-[13px] text-ink-2 hover:text-ink rounded-[var(--r-sm)] hover:bg-surface-sunken transition-colors"
       >
         Playground
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className={`transition-transform ${open ? "rotate-180" : ""}`}>
@@ -427,29 +432,29 @@ function PlaygroundMenu() {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-56 rounded-xl border border-foreground/10 bg-background shadow-lg py-1.5 z-50">
+        <div className="absolute right-0 top-full mt-1 w-56 rounded-[var(--r-md)] border border-border bg-surface shadow-[var(--shadow-card)] py-1.5 z-50">
           <Link
             href="/playground"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-3.5 py-2.5 hover:bg-foreground/[0.04] transition-colors"
+            className="flex items-center gap-3 px-3.5 py-2.5 hover:bg-surface-sunken transition-colors"
           >
-            <div className="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-950/50 flex items-center justify-center shrink-0">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-sky-600 dark:text-sky-400">
+            <div className="w-8 h-8 rounded-[var(--r-xs)] bg-surface-sunken flex items-center justify-center shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-2">
                 <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
               </svg>
             </div>
             <div>
-              <div className="text-[13px] font-medium">Mentor</div>
-              <div className="text-[11px] text-foreground/40">Conversation flow</div>
+              <div className="text-[13px] font-semibold text-ink">Mentor</div>
+              <div className="text-[11px] text-ink-3">Conversation flow</div>
             </div>
           </Link>
           <Link
             href="/playground/scaffold"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-3.5 py-2.5 hover:bg-foreground/[0.04] transition-colors"
+            className="flex items-center gap-3 px-3.5 py-2.5 hover:bg-surface-sunken transition-colors"
           >
-            <div className="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-950/50 flex items-center justify-center shrink-0">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-violet-600 dark:text-violet-400">
+            <div className="w-8 h-8 rounded-[var(--r-xs)] bg-accent-tint flex items-center justify-center shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent-ink">
                 <rect x="3" y="3" width="7" height="7" />
                 <rect x="14" y="3" width="7" height="7" />
                 <rect x="3" y="14" width="7" height="7" />
@@ -457,8 +462,8 @@ function PlaygroundMenu() {
               </svg>
             </div>
             <div>
-              <div className="text-[13px] font-medium">Scaffold</div>
-              <div className="text-[11px] text-foreground/40">Generate &amp; test scaffolds</div>
+              <div className="text-[13px] font-semibold text-ink">Scaffold</div>
+              <div className="text-[11px] text-ink-3">Generate &amp; test scaffolds</div>
             </div>
           </Link>
         </div>

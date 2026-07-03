@@ -1,0 +1,95 @@
+/* ============================================================
+   FLINT — Design Tokens
+   "Warm minimalism, one confident spark."
+   Drop this into your app and reference the variables everywhere.
+   ============================================================ */
+
+:root {
+  /* ---- Surfaces (warm off-white → white) ---- */
+  --canvas:        #f4f2ee;  /* app background */
+  --surface:       #ffffff;  /* cards, panels, the main working plane */
+  --surface-raised:#faf9f6;  /* window chrome / subtle raised bars */
+  --surface-sunken:#f3f1ec;  /* header cells, inset chips */
+  --chat-tint:     #fcfbf9;  /* the conversation panel */
+
+  /* ---- Ink (warm near-black → muted) ---- */
+  --ink:    #171717;  /* primary text, strong titles */
+  --ink-2:  #52504a;  /* body copy, secondary */
+  --ink-3:  #8c897f;  /* muted labels, captions, placeholders */
+
+  /* ---- Borders (low-contrast, never harsh) ---- */
+  --border:        #e6e3db;  /* default hairline */
+  --border-strong: #d9d5cb;  /* emphasis / hover */
+
+  /* ---- The spark (single warm accent) ---- */
+  --accent:      #f46e1f;  /* primary — active states, identity, "you fill this" */
+  --accent-ink:  #b4520f;  /* accent text on a light tint (AA on --accent-tint) */
+  --accent-tint: #fff6ee;  /* accent surface / filled data cells */
+  --accent-line: #f4c6a0;  /* accent border */
+
+  /* ---- Radius ---- */
+  --r-xs:  8px;    /* cells, tiny controls */
+  --r-sm:  12px;   /* inputs, small cards */
+  --r-md:  16px;   /* cards, message bubbles */
+  --r-lg:  20px;   /* windows, large panels */
+  --r-pill:999px;  /* tabs, chips */
+
+  /* ---- Shadows (soft, large, low-opacity, warm) ---- */
+  --shadow-sm:     0 8px 24px -16px rgba(24,18,10,.25);
+  --shadow-card:   0 30px 56px -32px rgba(24,18,10,.28);
+  --shadow-window: 0 40px 90px -50px rgba(24,18,10,.45);
+
+  /* ---- Type ---- */
+  --font-sans: "Geist", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---- Motion ---- */
+  --ease:      cubic-bezier(.16, 1, .3, 1);
+  --dur-fast:  .2s;
+  --dur:       .35s;
+  --dur-slow:  .7s;
+
+  /* ---- Spacing rhythm (4px base) ---- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-7: 30px; --sp-8: 40px; --sp-10: 60px;
+
+  /* ---- Focus ring ---- */
+  --focus: 0 0 0 3px rgba(244,110,31,.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Optional dark variant — same spark, inverted warmth.
+     Uncomment / tune if Flint ships a dark mode. */
+  /*
+  :root{
+    --canvas:#141310; --surface:#1c1b18; --surface-raised:#211f1b;
+    --surface-sunken:#26241f; --chat-tint:#1a1916;
+    --ink:#f2efe8; --ink-2:#b8b3a8; --ink-3:#847f74;
+    --border:#2c2a25; --border-strong:#3a372f;
+    --accent:#f46e1f; --accent-ink:#ffb27a; --accent-tint:#2a1c10; --accent-line:#5a3a1c;
+  }
+  */
+}
+
+/* ---- Tailwind v4 note ----
+   Flint already uses Tailwind v4 + Geist. Mirror these into @theme so
+   you get `bg-surface`, `text-ink`, `text-accent`, `rounded-md`, etc:
+
+   @theme inline {
+     --color-canvas: #f4f2ee;
+     --color-surface: #ffffff;
+     --color-surface-raised: #faf9f6;
+     --color-surface-sunken: #f3f1ec;
+     --color-ink: #171717;
+     --color-ink-2: #52504a;
+     --color-ink-3: #8c897f;
+     --color-border: #e6e3db;
+     --color-accent: #f46e1f;
+     --color-accent-ink: #b4520f;
+     --color-accent-tint: #fff6ee;
+     --color-accent-line: #f4c6a0;
+     --radius-md: 16px;
+     --font-sans: var(--font-geist-sans);
+     --font-mono: var(--font-geist-mono);
+   }
+*/

@@ -58,28 +58,26 @@ export function SessionView({ sessionId }: SessionViewProps) {
 
   if (!loaded) {
     return (
-      <div className="h-dvh flex items-center justify-center text-foreground/40 text-sm">
-        Loading...
+      <div className="h-dvh flex items-center justify-center font-mono text-[13px] text-ink-3">
+        Loading…
       </div>
     );
   }
 
   return (
-    <div className="h-dvh flex flex-col">
-      {/* Top bar */}
-      <header className="flex items-center gap-3 px-4 py-3 border-b border-foreground/10 shrink-0">
+    <div className="h-dvh flex flex-col bg-canvas">
+      {/* Window chrome */}
+      <header className="flex items-center gap-3 px-4 py-2.5 border-b border-border bg-surface-raised shrink-0">
         <button
           onClick={() => router.push("/")}
-          className="text-foreground/50 hover:text-foreground transition-colors text-sm"
+          className="flex items-center gap-1.5 font-mono text-[12px] text-ink-3 hover:text-ink transition-colors duration-[var(--dur-fast)]"
         >
-          &larr; Projects
+          <span aria-hidden>&larr;</span> Projects
         </button>
-        <div className="w-px h-4 bg-foreground/10" />
-        <h1 className="text-sm font-medium">Flint</h1>
         <div className="flex-1" />
         <button
           onClick={() => setChatCollapsed(!chatCollapsed)}
-          className="text-xs px-2.5 py-1 rounded-md border border-foreground/10 text-foreground/50 hover:text-foreground hover:border-foreground/20 transition-colors"
+          className="rounded-[var(--r-xs)] border border-border px-2.5 py-1 text-[12px] text-ink-2 hover:text-ink hover:border-border-strong transition-colors duration-[var(--dur-fast)]"
         >
           {chatCollapsed ? "Show Chat" : "Hide Chat"}
         </button>
@@ -87,14 +85,14 @@ export function SessionView({ sessionId }: SessionViewProps) {
 
       {/* Split pane */}
       <div className="flex-1 flex min-h-0">
-        {/* Left: Scaffold area */}
-        <div className="flex-1 flex flex-col min-w-0 border-r border-foreground/10">
+        {/* Left: Scaffold area (the working plane) */}
+        <div className="flex-1 flex flex-col min-w-0 border-r border-border bg-surface">
           <ScaffoldPanel />
         </div>
 
         {/* Right: Chat sidebar — kept mounted to preserve state */}
         <div
-          className={`w-[420px] shrink-0 flex flex-col min-h-0 bg-background ${
+          className={`w-[420px] shrink-0 flex flex-col min-h-0 bg-chat-tint ${
             chatCollapsed ? "hidden" : ""
           }`}
         >

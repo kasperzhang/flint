@@ -25,10 +25,12 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
 
   if (messages.length === 0) {
     return (
-      <div className="flex-1 flex items-center justify-center text-foreground/40">
-        <div className="text-center space-y-2">
-          <p className="text-lg font-medium">What are you thinking about?</p>
-          <p className="text-sm">
+      <div className="flex-1 flex items-center justify-center px-6 text-center">
+        <div className="space-y-2 max-w-xs">
+          <p className="text-[18px] font-bold tracking-[-0.02em] text-ink">
+            What are you thinking about?
+          </p>
+          <p className="text-[14px] text-ink-2 leading-relaxed">
             Describe a problem or decision you&apos;re working through.
           </p>
         </div>
@@ -37,7 +39,7 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+    <div className="flex-1 overflow-y-auto px-5 py-6 space-y-5">
       {messages.map((message) => {
         const text = getTextContent(message);
 
@@ -46,22 +48,27 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
           return null;
         }
 
-        return (
-          <div key={message.id} className="flex gap-3">
-            <div
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0 mt-0.5 ${
-                message.role === "user"
-                  ? "bg-foreground text-background"
-                  : "bg-foreground/10 text-foreground"
-              }`}
-            >
-              {message.role === "user" ? "Y" : "F"}
+        const isUser = message.role === "user";
+
+        if (isUser) {
+          return (
+            <div key={message.id} className="flex justify-end">
+              <div className="max-w-[85%] rounded-[16px_16px_4px_16px] border border-border bg-surface-sunken px-4 py-2.5">
+                <p className="text-[14px] leading-relaxed text-ink whitespace-pre-wrap">
+                  {text}
+                </p>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-foreground/40 mb-1">
-                {message.role === "user" ? "You" : "Flint"}
+          );
+        }
+
+        return (
+          <div key={message.id} className="flex justify-start">
+            <div className="max-w-[92%] rounded-[16px_16px_16px_4px] border border-border bg-surface px-4 py-3 shadow-[var(--shadow-sm)]">
+              <p className="mb-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-accent">
+                Flint
               </p>
-              <div className="text-sm leading-relaxed prose prose-sm prose-neutral dark:prose-invert max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-headings:my-2">
+              <div className="text-[14px] leading-relaxed text-ink prose prose-sm max-w-none prose-p:my-1 prose-p:text-ink prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-headings:my-2 prose-strong:text-ink">
                 <ReactMarkdown>{text}</ReactMarkdown>
               </div>
             </div>
@@ -69,14 +76,13 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
         );
       })}
       {isLoading && (
-        <div className="flex gap-3">
-          <div className="w-6 h-6 rounded-full bg-foreground/10 flex items-center justify-center text-xs shrink-0">
-            F
-          </div>
-          <div className="flex items-center gap-1 pt-1">
-            <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce [animation-delay:0ms]" />
-            <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce [animation-delay:150ms]" />
-            <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce [animation-delay:300ms]" />
+        <div className="flex justify-start">
+          <div className="rounded-[16px_16px_16px_4px] border border-border bg-surface px-4 py-3">
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 bg-accent/50 rounded-full animate-bounce [animation-delay:0ms]" />
+              <span className="w-1.5 h-1.5 bg-accent/50 rounded-full animate-bounce [animation-delay:150ms]" />
+              <span className="w-1.5 h-1.5 bg-accent/50 rounded-full animate-bounce [animation-delay:300ms]" />
+            </div>
           </div>
         </div>
       )}

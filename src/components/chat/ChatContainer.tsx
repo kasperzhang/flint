@@ -176,11 +176,11 @@ export function ChatContainer({ initialMessages }: ChatContainerProps) {
   return (
     <div className="flex flex-col h-full">
       {/* Phase indicator + confidence slider */}
-      <div className="px-3 py-2 border-b border-foreground/10">
+      <div className="px-3 py-2 border-b border-border">
         <PhaseIndicator currentPhase={phase} />
         {(phase === "problem" || phase === "clarify") && (
-          <div className="flex items-center gap-2 mt-1.5">
-            <span className="text-[10px] text-foreground/40 select-none">Fast</span>
+          <div className="flex items-center gap-2 mt-1.5 px-1">
+            <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-ink-3 select-none">Fast</span>
             <input
               type="range"
               min={1}
@@ -188,9 +188,9 @@ export function ChatContainer({ initialMessages }: ChatContainerProps) {
               step={1}
               value={confidenceLevel}
               onChange={(e) => setConfidenceLevel(Number(e.target.value))}
-              className="h-1 flex-1 accent-foreground/50 cursor-pointer"
+              className="h-1 flex-1 cursor-pointer accent-[var(--accent)]"
             />
-            <span className="text-[10px] text-foreground/40 select-none">Thorough</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-ink-3 select-none">Thorough</span>
           </div>
         )}
       </div>
